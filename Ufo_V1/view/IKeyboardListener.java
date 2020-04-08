@@ -27,6 +27,13 @@ public interface IKeyboardListener {
 	public void keyDown(int key);
 	
 	
+	/**
+	 * This method could use to notify when a specific key is pressed
+	 * 
+	 * @param key which the user pressed
+	 * @see KeyEvent
+	 */
+	public void keyPressed(int key);
 
 	
 }

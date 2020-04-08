@@ -58,11 +58,11 @@ public class Ship implements IGameObject {
 	}
 	
 	public void moveLeft() {
-		x = x - 10;
+		x = x - 5;
 	}
 	
 	public void moveRight() {
-		x = x + 10;
+		x = x + 5;
 	}
 	
 }

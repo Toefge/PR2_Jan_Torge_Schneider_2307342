@@ -114,6 +114,18 @@ public class GameFrameWork {
 					}
 				}
 			}
+			
+			@Override
+			public void keyPressed(KeyEvent event) {
+				for (IKeyboardListener keys : keyInputs) {
+					for (int key : keys.getKeys()) {
+						if (event.getKeyCode() == key) {
+							keys.keyPressed(key);
+							
+						}
+					}
+				}
+			}
 
 		});
 		gameFrame.addMouseListener(new MouseAdapter() {

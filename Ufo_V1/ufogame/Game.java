@@ -402,13 +402,7 @@ public class Game implements ITickableListener, IKeyboardListener{
 				
 			}
 			
-			if(key==KeyEvent.VK_A) {
-				ship.moveLeft();
-			}
 			
-			if(key==KeyEvent.VK_D) {
-				ship.moveRight();
-			}
 			
 		//Folgende Tastaturauswertung geschieht nur im Menü. 
 		}else if(key==KeyEvent.VK_ENTER){
@@ -426,6 +420,19 @@ public class Game implements ITickableListener, IKeyboardListener{
 			gameLoop();
 		}
 	}
+	
+	@Override
+	public void keyPressed(int key) {
+		
+		if(key==KeyEvent.VK_A) {
+			ship.moveLeft();
+		}
+		
+		if(key==KeyEvent.VK_D) {
+			ship.moveRight();
+		}
+	}
+	
 	
 	//Methode die alle Spielobjekte entfernt und löscht.
 	public void endGame() {
@@ -483,4 +490,6 @@ public class Game implements ITickableListener, IKeyboardListener{
 		music.stopBackgorundMusic();
 		menueLoop();
 	}
+
+	
 }
