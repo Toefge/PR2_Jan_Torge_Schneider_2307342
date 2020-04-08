@@ -115,6 +115,8 @@ public class GameFrameWork {
 				}
 			}
 			
+			//Überschreibt die Methode keyPressed aus der Klasse KeyAdapter.
+			//In der if-Schleife muss im Vergleich zu keyReleased lediglich die Methode keyDown durch keyPressed ersetzt werden.
 			@Override
 			public void keyPressed(KeyEvent event) {
 				for (IKeyboardListener keys : keyInputs) {

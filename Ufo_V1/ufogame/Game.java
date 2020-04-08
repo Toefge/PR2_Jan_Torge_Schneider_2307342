@@ -361,7 +361,7 @@ public class Game implements ITickableListener, IKeyboardListener{
 		return keys;
 	}
 
-	//Übernimmt die Auswertung der Tastenanschläge.
+	//Übernimmt die Auswertung der Tastenanschläge. Gilt nur für einen einzelnen Tastenanschlag.
 	@Override
 	public void keyDown(int key) {
 		
@@ -401,8 +401,7 @@ public class Game implements ITickableListener, IKeyboardListener{
 				endGame();
 				
 			}
-			
-			
+					
 			
 		//Folgende Tastaturauswertung geschieht nur im Menü. 
 		}else if(key==KeyEvent.VK_ENTER){
@@ -421,13 +420,17 @@ public class Game implements ITickableListener, IKeyboardListener{
 		}
 	}
 	
+	//Überschreibt die Methode keyPressed aus IKeyboardListener.
+	//Methode wertet alle Tasten aus, die gedrückt sind.
 	@Override
 	public void keyPressed(int key) {
 		
+		//Hält man A gedrückt, bewegt sich das Ship nach links.
 		if(key==KeyEvent.VK_A) {
 			ship.moveLeft();
 		}
 		
+		//Hält man D gedrückt, bewegt sich das Ship nach rechts.
 		if(key==KeyEvent.VK_D) {
 			ship.moveRight();
 		}
