@@ -95,6 +95,7 @@ public class Game implements ITickableListener, IKeyboardListener{
 		}
 		
 		//Jedes mal wenn der Timer tickt wird die Tick Methode aufgerufen
+		//TODO erst wenn du alles initialisiert hast, solltest du bei jeden Timer tick benachrichtigt werden, du bekommst so teilweise Nullpointer exceptions
 		frameWork.addTick(this);
 		//Für ein Ende des Spiels frameWork.removeTick(this);
 		
@@ -149,6 +150,7 @@ public class Game implements ITickableListener, IKeyboardListener{
 			
 			//Entfernt die Projektile, die den Bildschirm verlassen haben.
 			//Checken ob, ArrayList gefüllt ist!!!
+			//TODO du kannst auch schreiben if(!projectiles.isEmpty()) {
 			if(projectiles.size()>0) {
 				if(projectiles.get(0).getY() < 0) {
 					
