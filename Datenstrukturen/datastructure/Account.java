@@ -26,6 +26,17 @@ public class Account{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (int) (number ^ (number >>> 32));
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -45,19 +56,5 @@ public class Account{
 			return false;
 		return true;
 	}
-
-	
-	
-//	@Override
-//	public int compareTo(Account o) {
-//		if(this.number == o.number) {
-//			return -1;
-//		}else if(this.name.equals(o.name)) {
-//			return 1;
-//		}else {
-//			return 0;
-//		}
-//	}
-	
 
 }
