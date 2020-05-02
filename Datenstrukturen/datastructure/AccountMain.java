@@ -22,8 +22,6 @@ public class AccountMain {
 		accounts.add(new Account("Gamorreaner",666666L));
 		accounts.add(new Account("Gamorreaner",666666L));
 		
-		Iterator<Account> its = accounts.iterator(); 
-		
 		boolean runTime = true;
 		
 		while(runTime) {
