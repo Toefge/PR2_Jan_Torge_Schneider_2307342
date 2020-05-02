@@ -17,15 +17,12 @@ public class AccountMain {
 		accounts.add(new Account("Baby Yoda",123456789L));
 		accounts.add(new Account("Jabba the Hutt",987654321L));
 		accounts.add(new Account("Rancor",01760175L));
+		
+		//WARUM WIRD DAS HIER BEIDES IN DIE HASHSET GESCHRIEBEN??? :(
 		accounts.add(new Account("Gamorreaner",666666L));
 		accounts.add(new Account("Gamorreaner",666666L));
 		
 		Iterator<Account> its = accounts.iterator(); 
-    	
-    	while (its.hasNext()) {
-    		Account account = its.next();
-            System.out.println(String.format("%20s: %d", account.getName(), account.getNumber())); 
-        }
 		
 		boolean runTime = true;
 		
@@ -39,6 +36,7 @@ public class AccountMain {
 			
 			String buffer2 = scanner.next();
 			
+			//DER AUSKOMMENTIERTE TEIL VERMEIDET MANUELL EINE DOPPLUNG.
 			//boolean accountValid = true;
 			
 			//Iterator<Account> i = accounts.iterator(); 
@@ -62,6 +60,7 @@ public class AccountMain {
 //	            }
 //	        }
 			
+			//Sonst steht hier accountValid anstelle von true
 	        if(true) {
 	        	
 	        	accounts.add(new Account(buffer2,buffer1));
