@@ -29,9 +29,12 @@ public class ConnectionThread extends Thread  {
 	@Override
 	public void run() {
 		
-		try {
+		
 			
-			while(isRunning) {
+		while(isRunning) {
+		
+			try {
+				
 				Socket socket = serverSocket.accept();
 				System.out.println("Connection von einem Client angenommmen.");
 				
@@ -44,20 +47,16 @@ public class ConnectionThread extends Thread  {
 					printWriter.add(clientWriter);
 				}
 				
-				
-				
 				ReaderThread clientReaderThread = new ReaderThread(clientScanner, queue);
 				clientReaderThread.start();
 				synchronized(readerThread) {
 					readerThread.add(clientReaderThread);
 				}
 				
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
-		
 	}
 	
 	public void quit() {

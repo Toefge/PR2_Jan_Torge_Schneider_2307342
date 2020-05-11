@@ -29,7 +29,7 @@ public class ReaderThread extends Thread {
 					String message = scanner.nextLine();
 					
 					if(message.equalsIgnoreCase("quit")) {
-						isRunning = false;
+						quit();
 					} else {
 						queue.put(message);
 					
