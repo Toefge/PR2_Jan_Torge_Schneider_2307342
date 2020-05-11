@@ -47,6 +47,7 @@ public class ConnectionThread extends Thread  {
 				clientReaderThread.start();
 				readerThread.add(clientReaderThread);
 			
+				
 			}
 			
 		} catch(Exception e) {

@@ -32,10 +32,11 @@ public class WriterThread extends Thread {
 					//System.out.println("Test");
 					
 					String buffer = queue.take();
-					
-					for(PrintWriter clientWriter : printWriter) {
-						clientWriter.println(buffer);
-						clientWriter.flush();
+					synchronized(printWriter) {
+						for(PrintWriter clientWriter : printWriter) {
+							clientWriter.println(buffer);
+							clientWriter.flush();
+						}
 					}
 				}
 				
