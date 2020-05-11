@@ -3,6 +3,12 @@ package ufogame;
 import java.awt.Color;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import view.GameFrameWork;
@@ -12,8 +18,7 @@ import view.Message;
 
 public class Game implements ITickableListener, IKeyboardListener{
 	
-	//Idea: we want to have multiple instances of an ufo and of a projectile
-	//<Datentyp> Name 
+	//ArrayList<Datentyp> Name 
 	//Arraylist Endlos ELemente
 	//Speichert die Projektile des Ships
 	private ArrayList<Projectile> projectiles = new ArrayList<>();
@@ -42,8 +47,46 @@ public class Game implements ITickableListener, IKeyboardListener{
 		
 	private boolean gamestatus;
 	
-	
 	private static Sound music = new Sound();
+	
+	//Highscore
+	Highscore highscores;
+	File file = new File("Ufo_V1\\assets\\data\\Highscores.txt");
+	
+	public void init() {
+		frameWork.setSize(screenWidth, screenHeight);
+		//frameWork.setBackgroundColor(Color.BLACK);
+//		highscores.setHighscore(new Score("Test1", 6));
+//		highscores.setHighscore(new Score("Test2", 2));
+//		highscores.setHighscore(new Score("Test3", 1));
+//		highscores.setHighscore(new Score("Test4", 3));
+//		highscores.setHighscore(new Score("Test5", 2));
+		
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			Object obj = ois.readObject();
+			fis.close();
+			ois.close();
+			
+			//Typprüfung vor dem Casten, Achtung es gibt auch Hacker!
+			if (obj instanceof Highscore) {
+				highscores = (Highscore) obj;
+				
+				//ArrayList<Score> highscoreAusgabe = highscores.getHighscore();
+				
+				System.out.println("Objekt erfolgreich aus der Datei eingelesen.");
+			}else {
+				System.out.println("Falscher Objekttyp beim Einlesen");
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		menueLoop();
+	}
 	
 	public void menueLoop(){
 		
@@ -52,14 +95,18 @@ public class Game implements ITickableListener, IKeyboardListener{
 		music.playMenueMusic();
 		
 		gamestatus=false;
-		frameWork.setSize(screenWidth, screenHeight);
-		//frameWork.setBackgroundColor(Color.BLACK);
+		
 		frameWork.setBackground(new Background("Ufo_V1\\assets\\space17.jpg")); 
 		//Jedes mal wenn der Timer tickt wird die Tick Methode aufgerufen
 		frameWork.addTick(this);
 		frameWork.addIKeyInput(this);
 		menueMessage = new Message("Press enter to start the game!", screenWidth/5, screenHeight/2, 40, Color.WHITE);
 		frameWork.addMessage(menueMessage);
+		
+		for(Score score : highscores.getHighscore()) {
+			System.out.println(String.format("%20s:\t%d", score.getUsername(), score.getHits()));
+		}
+		
 	}
 	
 	/**
@@ -201,6 +248,43 @@ public class Game implements ITickableListener, IKeyboardListener{
 				
 				music.loadDeath();
 				music.playDeath();
+								
+				highscores.setHighscore(new Score("Tim", hitCounter));
+				//Sortiert die Liste
+				highscores.sortHighscoreList();
+				
+				//Speichert den Score in die Datei Highscores
+				if(file.exists()) {
+					
+					System.out.println("Die Datei existiert");
+					
+				} else {
+					
+					System.out.println("Die Datei wird angelegt");
+					
+					try {
+						
+						file.createNewFile();
+						
+					} catch (IOException e) {
+						
+						e.printStackTrace();
+					}
+				}
+				
+				try (FileOutputStream fos = new FileOutputStream(file);
+				ObjectOutputStream oos = new ObjectOutputStream(fos)){
+					
+					oos.writeObject(highscores);
+					oos.flush();
+					oos.close();
+					fos.close();
+					System.out.println("Objekt weg geschrieben.");
+					
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
 				
 				//Ruft die Methode endGame auf, die die Game Loop beendet und zurück ins Menü kehrt.
 				endGame();
