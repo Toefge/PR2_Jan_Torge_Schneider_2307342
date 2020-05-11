@@ -40,13 +40,17 @@ public class ConnectionThread extends Thread  {
 				
 				clientWriter.println("Hallo Client! Hier kannst du eine Nachricht eingeben:)");
 				clientWriter.flush();
+				synchronized(printWriter) {
+					printWriter.add(clientWriter);
+				}
 				
-				printWriter.add(clientWriter);
+				
 				
 				ReaderThread clientReaderThread = new ReaderThread(clientScanner, queue);
 				clientReaderThread.start();
-				readerThread.add(clientReaderThread);
-			
+				synchronized(readerThread) {
+					readerThread.add(clientReaderThread);
+				}
 				
 			}
 			
