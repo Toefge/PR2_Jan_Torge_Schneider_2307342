@@ -28,6 +28,8 @@ public class ServerMain {
 			ConnectionThread connectionThread = new ConnectionThread(serverSocket, readerThread, printWriter, queue);
 			connectionThread.start();
 			
+			System.out.println("Server läuft.");
+			
 			while(isRunning) {
 				
 				for(ReaderThread reader : readerThread) {

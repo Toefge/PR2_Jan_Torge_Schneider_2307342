@@ -38,7 +38,7 @@ public class ConnectionThread extends Thread  {
 				PrintWriter clientWriter = new PrintWriter(socket.getOutputStream());
 				Scanner clientScanner = new Scanner(socket.getInputStream());
 				
-				clientWriter.println("Hallo Client :)");
+				clientWriter.println("Hallo Client! Hier kannst du eine Nachricht eingeben:)");
 				clientWriter.flush();
 				
 				printWriter.add(clientWriter);
