@@ -21,7 +21,7 @@ public class WriterThread extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("WriterThread läuft.");
+		//System.out.println("WriterThread läuft.");
 
 		while(isRunning) {
 			
@@ -29,7 +29,7 @@ public class WriterThread extends Thread {
 				
 				if(queue.size()!=0) {
 					
-					System.out.println("Test");
+					//System.out.println("Test");
 					
 					String buffer = queue.take();
 					

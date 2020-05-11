@@ -35,7 +35,7 @@ public class ServerMain {
 						isRunning = false;
 					}
 				}
-				System.out.println("Test");
+				//System.out.println("Test");
 			}
 			
 			for(PrintWriter writer : printWriter) {

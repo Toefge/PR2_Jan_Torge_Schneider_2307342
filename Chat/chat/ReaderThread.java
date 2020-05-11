@@ -19,7 +19,7 @@ public class ReaderThread extends Thread {
 	@Override
 	public void run() {
 		
-		System.out.println("ReaderThread läuft.");
+		//System.out.println("ReaderThread läuft.");
 
 		while(isRunning) {
 			
@@ -33,7 +33,7 @@ public class ReaderThread extends Thread {
 					} else {
 						queue.put(message);
 					
-						System.out.println("Die Nachricht: " + message +" sollte eingelesen und in der Blocking Queue aufgenommen sein.");
+						//System.out.println("Die Nachricht: " + message +" sollte eingelesen und in der Blocking Queue aufgenommen sein.");
 					}
 				}
 					

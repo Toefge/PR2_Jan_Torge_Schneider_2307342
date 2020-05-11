@@ -13,7 +13,7 @@ public class ClientMain {
 			Socket socket = new Socket("127.0.0.1", 3445);
 			PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
 			Scanner scanner = new Scanner(socket.getInputStream());
-			System.out.println("Bitte gib eine Nachricht ein:");
+			//System.out.println("Bitte gib eine Nachricht ein:");
 		
 			writeMessage(printWriter);
 			
