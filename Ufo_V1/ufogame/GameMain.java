@@ -10,7 +10,7 @@ public class GameMain {
 		Game game = new Game();
 		game.init();
 		
-		//test
+		//Hallo
 		
 		
 	}
