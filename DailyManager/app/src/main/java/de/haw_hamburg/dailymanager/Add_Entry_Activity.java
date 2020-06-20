@@ -28,7 +28,7 @@ public class Add_Entry_Activity extends AppCompatActivity {
     public static final  String YEAR = "YEAR";
     public static final  String MONTH = "MONTH";
     public static final  String DAY = "DAY";
-    public static final  String EVENT = "Event";
+    public static final  String DATE = "Date";
 
     /*
     Falls die Zeit als String eingegeben werden soll
@@ -50,7 +50,9 @@ public class Add_Entry_Activity extends AppCompatActivity {
     private WriterService writerService = new WriterService();
     private ReadService readService;
     private Object obj;
-    private HashMap<Integer,Event> map;
+    private HashMap<String,Event> map;
+    private long date;
+    private Calendar calendar = Calendar.getInstance();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class Add_Entry_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_add_entry_);
 
         readService = new ReadService();
-        obj = readService.readObject(Add_Entry_Activity.this);
+        obj = readService.readList(Add_Entry_Activity.this);
         if(obj==null){
             Log.i("Ausgabe", "Kein Objekt gefunden.");
         }else if(obj instanceof HashMap){
@@ -75,7 +77,7 @@ public class Add_Entry_Activity extends AppCompatActivity {
             Log.i("Ausgabe", "Fehler Jahr! ");
         }
         if(intent.hasExtra(MONTH)){
-            month = intent.getIntExtra(MONTH,0);
+            month = intent.getIntExtra(MONTH,0)+1;
         }else{
             Log.i("Ausgabe", "Fehler Monat! ");
         }
@@ -106,11 +108,12 @@ public class Add_Entry_Activity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int jahr, int monat, int tag) {
                 //Wenn das Datum mit dem DatePicker bearbeitet wird, werden die Daten hier abgespeichert. ACHTUNG: Diese Methode gibt den Monat von 1-12 zurück!
+                choosedDate.setText(jahr+"."+monat+"."+tag);
                 year = jahr;
-                month = monat;
+                month = monat-1;
                 day = tag;
                 //Ändert die Textview in das neue Datum
-                choosedDate.setText(year+"."+month+"."+day);
+
             }
         };
 
@@ -164,7 +167,7 @@ public class Add_Entry_Activity extends AppCompatActivity {
                  */
 
                 //Event Objekt erstellen
-                Event event = new Event(year, month, day, hours, minutes, name.getText().toString());
+                Event event = new Event(year, month-1, day, hours, minutes, name.getText().toString());
 
                 /*
                 Log.i("Ausgabe", "Jahr: "+year);
@@ -188,15 +191,16 @@ public class Add_Entry_Activity extends AppCompatActivity {
 
                 Log.i("Ausgabe", event.toString());
 
-                map.put(day, event);
-
+                calendar.set(year,month-1,day);
+                date = calendar.getTimeInMillis();
+                map.put("Key:"+year+(month-1)+day, event);
+                Log.i("Ausgabe", "Add entry Key:"+year+(month-1)+day);
                 //Schreibt das Event Objekt weg. ACHTUNG: Event Objekt muss Seriallizable implementiert haben!!!
                 writerService.writeObject(Add_Entry_Activity.this, map);
 
                 //Zurück zur Main, mit der Info, dass ein Event Objekt erstellt wurde. Nur dann soll die Main dieses aus dem Speicher abrufen.
                 Intent intent = new Intent(Add_Entry_Activity.this, MainActivity.class);
-                intent.putExtra(EVENT, event.getStartTime().getTimeInMillis());
-                intent.putExtra(DAY, day);
+                intent.putExtra(DATE, date);
                 startActivity(intent);
             }
         });

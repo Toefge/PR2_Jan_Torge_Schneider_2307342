@@ -93,7 +93,7 @@ public class Event implements Serializable {
                 "Jahr=" + startTime.get(startTime.YEAR) +
                 ", Monat=" + startTime.get(startTime.MONTH) +
                 ", Tag=" + startTime.get(startTime.DAY_OF_MONTH) +
-                ", Stunde=" + startTime.get(startTime.HOUR_OF_DAY) +
+                ", Stunde=" + startTime.get(startTime.HOUR) +
                 ", Minute=" + startTime.get(startTime.MINUTE) +
                 ", eventName='" + eventName + '\'' +
                 ", location='" + location + '\'' +

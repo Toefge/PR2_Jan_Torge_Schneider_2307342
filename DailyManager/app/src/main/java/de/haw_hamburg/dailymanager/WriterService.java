@@ -12,7 +12,7 @@ public class WriterService {
 
     public static void writeObject(Context context, Object object) {
 
-        File file = new File(context.getExternalFilesDir(null).getAbsolutePath(), ReadService.OBJECT_FILE);
+        File file = new File(context.getExternalFilesDir(null).getAbsolutePath(), ReadService.LIST_FILE);
 
         try (FileOutputStream fos = new FileOutputStream(file);
              ObjectOutputStream oos = new ObjectOutputStream(fos)){

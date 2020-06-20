@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
     public static final  String YEAR = "YEAR";
     public static final  String MONTH = "MONTH";
     public static final  String DAY = "DAY";
-    public static final  String EVENT = "Event";
+    public static final  String DATE = "Date";
 
     //Calender Objekt erstellen.
-    private Calendar calendar = Calendar.getInstance();;
+    private Calendar calendar = Calendar.getInstance();
     private int year;
     private int month;
     private int day;
@@ -39,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private WriterService writerService;
     private Object obj;
 
-    private HashMap<Integer,Event> map = new HashMap<>();
+    private HashMap<String,Event> map = new HashMap<>();
     private TextView textView;
-    private long buffer;
+    private long date;
+    private String key;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +53,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.Entry);
 
-        CalendarView calendarView = findViewById(R.id.calendarView);
+        final CalendarView calendarView = findViewById(R.id.calendarView);
         //Log.i("Ausgabe", "Year, Month, Day: "+year+" "+month+" "+day);
+
 
         //Übergabeparameter auslesen
         Intent intent = getIntent();
 
         //Nur wenn gerade ein Event erstellt wurde und Daten überben wurden, wird das Objekt mit dem Event Objekt initialisiert.
-        if(intent.hasExtra(EVENT)){
+        if(intent.hasExtra(DATE)){
             //Das zweite ist der default Wert
-            buffer = intent.getLongExtra(EVENT, calendarView.getDate());
-            calendarView.setDate(buffer);
-        }
-        if(intent.hasExtra(DAY)){
-            //Das zweite ist der default Wert
-            day = intent.getIntExtra(DAY, calendar.get(Calendar.DAY_OF_MONTH));
+            date = intent.getLongExtra(DATE, calendar.getTimeInMillis());
+            calendarView.setDate(date);
+            calendar.setTimeInMillis(date);
         }else{
             /*
             Die Daten year, month und day werden an die Add_Entry_Activity übergeben. Diese werden gesetzt, wenn im Calender ein Tag angeklickt wird.
@@ -71,35 +73,44 @@ public class MainActivity extends AppCompatActivity {
             werden zu Beginn die aktuellen Daten in den Variablen eingetragen.
             */
             year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH)+1;
-            day = calendar.get(Calendar.DAY_OF_MONTH) ;
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            date = calendar.getTimeInMillis();
+            Log.i("Ausgabe", "Einmalig "+year+" "+(month)+" "+day);
         }
 
-        obj = readService.readObject(MainActivity.this);
+        obj = readService.readList(MainActivity.this);
         //Wenn das Objekt nicht richtig Übergeben wurde oder die App gerade erst gestartet wurde, ist das obj nicht initialisiert und es soll im Log darauf aufmerksam gemacht werden.
         if(obj==null){
             Log.i("Ausgabe", "Kein Objekt gefunden.");
         }else if(obj instanceof HashMap){
-            //Log.i("Ausgabe", "Tag"+((Event) obj).getDay());
-            //CalenderView auf den aktuellen Tag setzte. setDate benötigt ein Long Wert. Dieser kann mit dem Calender Objekt (getStartTime()) aus dem Event Objekt mit der Methode getTimeInMillis() abgerufen werden.
+
             map=(HashMap) obj;
-            if(map.containsKey(day)){
-                textView.setText(map.get(day).getEventName()+" "+map.get(day).getHour()+":"+map.get(day).getMin()+" "+map.get(day).getLocation()+" "+map.get(day).getNote());
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            key= "Key:"+year+month+day;
+            if(map.containsKey(key)){
+                textView.setText(map.get(key).getEventName()+", "+map.get(key).getHour()+":"+map.get(key).getMin()+"Uhr, "+map.get(key).getLocation()+", "+map.get(key).getNote());
             }
-        }else{
+            //Log.i("Ausgabe", "Größe der Liste "+map.size());
+        }
+
+        /*
+        else{
+
             map = new HashMap<>();
              /*
             ULTRA WICHTIG!!!!!!
             Sollte die App beim ersten Start abstürzen, wenn man direkt versucht  das Datum zu wechseln, dann liegt das daran, dass map noch nicht initialisiert wurde.
-            Dies liegt daran, dass noch kein Objekt von Typ HashMap bzw. keine Datei Data.bin existiert. Ich denke mal mit diesem else sollte das Problem gelöst sein.
-            Ist dies nicht der Fall, muss der nachfolde Code auskommentiert werden und über das Einlesen mit dem readService plaziert werden.
-            Dadurch wird einmalig eine Datei/Objekt angelegt. Anschließend löscht man diese Zeile Code oder kommentiert wie wieder.
-            Denn ansonsten würde man bei jedem Aufruf das Objekt mit einer leeren HashMap überschreiben, was ja nicht gewollt ist :D.
-            Generell müsste ich eigentlich anders abfragen, z.B. ob das Objekt bzw. die Data.bin Datei bereits existiert.
-             */
+            Das kann daran liegen, dass bisher Event Elemente abgespeichert wurden. Also greift die If Abfrage "obj instanceof HashMap" nicht.
+            Mit diesem else sollte das Problem behoben werden. Ansonsten kann man mit nachfolgendem Code einmalig eine HashMap abspeichern.
             //writerService.writeObject(MainActivity.this, map);
-        }
+            Allerdings dar der Code nur einmalig ausgeführt werden und sollte danach wieder auskommentiert oder gelöscht werden.
+            Ansonsten würde man unse HashMap immer mit einer leeren überschreiben.
 
+        }
+*/
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,20 +129,23 @@ public class MainActivity extends AppCompatActivity {
 
         calendarView.setOnDateChangeListener((new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int jahr, int monat, int tag) {
+            public void onSelectedDayChange(CalendarView view, int jahr, int monat, int tag) {
 
                 //ACHTUNG: Diese Methode gibt den Monat von 0-11 zurück!
                 year = jahr;
-                month = monat+1;
+                month = monat;
                 day = tag;
+                Log.i("Ausgabe", "Main Key:"+year+month+day);
+                calendar.set(year,month,day);
+                key = "Key:"+year+month+day;
 
                 //Super schlechte Dukumentation, da i, i1 und i2 das angewählte Jahr, Monat und Tag sind.
                 //Das ging aus den alten Parametern nicht hervor. Außerdem ist das Objekt calenderView2 das gleiche wie calenderView, auch wenn sich der angewählte Tag verändert hat.
                 //Mit folgendem Code, erhält man nur wieder das heutige Datum: datum.setTime(calendarView2.getDate());
                 Toast.makeText(MainActivity.this, "Gewählter Tag: "+tag, Toast.LENGTH_SHORT).show();
 
-                if(map.containsKey(tag)){
-                    textView.setText(map.get(tag).getEventName()+" "+map.get(tag).getHour()+":"+map.get(tag).getMin()+" "+map.get(tag).getLocation()+" "+map.get(tag).getNote());
+                if(map.containsKey(key)){
+                    textView.setText(map.get(key).getEventName()+", "+map.get(key).getHour()+":"+map.get(key).getMin()+"Uhr, "+map.get(key).getLocation()+", "+map.get(key).getNote());
                 }else{
                     textView.setText("");
                 }
