@@ -8,6 +8,12 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import view.GamePanel;
+import view.IBackground;
+import view.IGameObject;
+import view.Message;
+import view.Shape;
+
 public class GameFrame extends JFrame{
 	
 	/**

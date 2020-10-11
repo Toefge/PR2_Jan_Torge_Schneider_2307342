@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 
+import view.GameFrameWork;
+
 public class GameMain {
 
 	public static void main(String[] args) {

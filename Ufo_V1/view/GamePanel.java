@@ -13,6 +13,13 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import view.IBackground;
+import view.IChangeableColor;
+import view.IGameObject;
+import view.Message;
+import view.Rectangle;
+import view.Shape;
+
 public class GamePanel extends JPanel {
 
 	/**
