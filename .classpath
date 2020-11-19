@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="Vorlseung7"/>
 	<classpathentry kind="src" path="Chat"/>
 	<classpathentry kind="src" path="Klausurvorbereitung"/>
-	<classpathentry kind="src" path="Destroy and Devastate"/>
+	<classpathentry kind="src" path="Jumpy"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
